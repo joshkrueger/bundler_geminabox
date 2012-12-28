@@ -8,23 +8,22 @@ It allows you to use the same friendly rake command that bundler provides for re
 
 ## Usage!
 
-In your gemfile
+In your gemspec
 
 ```ruby
-gem "bundler_geminabox"
+gem.add_development_dependency "bundler_geminabox"
 ```
 
-In your gem's Rakefile, insert
+In your gem's Rakefile, replace
 
 ```ruby
-require "bundler_geminabox"
-BundlerGeminabox::GemHelper.install
+require 'bundler/gem_tasks'
 ```
 
-after
+with
 
 ```ruby
-Bundler::GemHelper.install_tasks
+require "bundler_geminabox/gem_tasks"
 ```
 
 Then simply

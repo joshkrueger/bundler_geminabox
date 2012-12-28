@@ -1,26 +1,22 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "bundler_geminabox/version"
 
-Gem::Specification.new do |s|
-  s.name        = "bundler_geminabox"
-  s.version     = BundlerGeminabox::VERSION
-  s.authors     = ["Josh Krueger"]
-  s.email       = ["joshsinbox@gmail.com"]
-  s.homepage    = "http://github.com/joshkrueger/bundler_geminabox"
-  s.summary     = %q{Release internal gems}
-  s.description = %q{Allows you to build/tag/push internal gems to a geminabox gem server with the same commands bundler's rake helpers provide. This just hijacks the process :)}
+Gem::Specification.new do |gem|
+  gem.name        = "bundler_geminabox"
+  gem.version     = BundlerGeminabox::VERSION
+  gem.authors     = ["Josh Krueger"]
+  gem.email       = ["joshsinbox@gmail.com"]
+  gem.homepage    = "http://github.com/joshkrueger/bundler_geminabox"
+  gem.summary     = %q{Release internal gems}
+  gem.description = %q{Allows you to build/tag/push internal gems to a geminabox gem server with the same commands bundler's rake helpers provide. This just hijacks the process :)}
 
-  s.rubyforge_project = "bundler_geminabox"
+  gem.files         = `git ls-files`.split($/)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths = ["lib"]
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
-
-  s.add_dependency  "geminabox"
-
-  # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
-  # s.add_runtime_dependency "rest-client"
+  gem.add_dependency "bundler"
+  gem.add_dependency "geminabox"
 end
