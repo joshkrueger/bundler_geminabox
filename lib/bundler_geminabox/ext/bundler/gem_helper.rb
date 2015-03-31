@@ -6,24 +6,24 @@ require 'bundler/gem_helper'
 
 module Bundler
   class GemHelper
-    def install
-      desc "Build #{name}-#{version}.gem into the pkg directory."
-      task 'build' do
-        build_gem
-      end
+    def install_with_geminabox
+      install_without_geminabox
 
-      desc "Build and install #{name}-#{version}.gem into system gems."
-      task 'install' do
-        install_gem
+      if Rake::Task["release"].full_comment
+        install_comment = Rake::Task["release"].full_comment.gsub("Rubygems", "your geminabox server")
+        if Rake::Task["release"].respond_to?(:clear_comments)
+          Rake::Task["release"].clear_comments
+        else
+          Rake::Task["release"].instance_variable_set("@comment", nil)
+          Rake::Task["release"].instance_variable_set("@full_comment", nil)
+        end
+        Rake::Task["release"].add_description install_comment
       end
-
-      desc "Create tag #{version_tag} and build and push #{name}-#{version}.gem to your geminabox server"
-      task 'release' do
-        release_gem
-      end
-
       GemHelper.instance = self
     end
+    alias_method :install_without_geminabox, :install
+    alias_method :install, :install_with_geminabox
+
 
     def rubygem_push(path)
       if Pathname.new("~/.gem/geminabox").expand_path.exist?
